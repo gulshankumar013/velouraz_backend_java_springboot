@@ -25,31 +25,42 @@ public class JwtFilter extends OncePerRequestFilter {
     private UserRepository userRepo;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain chain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain chain
+    ) throws ServletException, IOException {
 
         String header = request.getHeader("Authorization");
-        String token = null;
-        String email = null;
 
-        if (header != null && header.startsWith("Bearer ")) {
-            token = header.substring(7);
-            email = jwtUtil.extractEmail(token);
+        // 🔓 NO TOKEN → PUBLIC REQUEST (IMPORTANT)
+        if (header == null || !header.startsWith("Bearer ")) {
+            chain.doFilter(request, response);
+            return;
         }
 
+        String token = header.substring(7);
+        String email;
+
+        // ❗ Handle expired / invalid token safely
+        try {
+            email = jwtUtil.extractEmail(token);
+        } catch (Exception e) {
+            chain.doFilter(request, response);
+            return;
+        }
+
+        // Authenticate ONLY if not already authenticated
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             User dbUser = userRepo.findByEmail(email).orElse(null);
 
             if (dbUser != null && jwtUtil.validateToken(token, email)) {
 
-                // Load ROLE from DB (ADMIN / USER / MANAGER etc)
                 UserDetails userDetails = org.springframework.security.core.userdetails.User
                         .withUsername(dbUser.getEmail())
                         .password(dbUser.getPassword())
-                        .roles(dbUser.getRole())   // IMPORTANT: ROLE from DB
+                        .roles(dbUser.getRole()) // e.g. USER, ADMIN
                         .build();
 
                 UsernamePasswordAuthenticationToken auth =
