@@ -28,11 +28,14 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
+
+                        //public acces Api
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/", "/api/auth/signup", "/api/auth/login").permitAll()
                         .requestMatchers("/error").permitAll()
-
                         .requestMatchers("/api/necklace/**").permitAll()
+                        .requestMatchers("/api/top-category-slider/**").permitAll()
+                        .requestMatchers("/api/daily-wear/**").permitAll()
                         // ✅ CART API ACCESS
                         .requestMatchers("/api/cart/**").authenticated()
 

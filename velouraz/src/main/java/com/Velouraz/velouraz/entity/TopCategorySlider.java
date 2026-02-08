@@ -21,9 +21,10 @@ public class TopCategorySlider {
     @Column(columnDefinition = "LONGTEXT")
     private String sliderImage;   // Base64 image
 
+    @Column(nullable = false)
     private String sliderTitle;
 
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String sliderDetails;
 }

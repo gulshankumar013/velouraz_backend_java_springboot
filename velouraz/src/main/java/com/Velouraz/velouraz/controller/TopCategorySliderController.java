@@ -22,44 +22,65 @@ public class TopCategorySliderController {
     @PostMapping("/upload")
     public ResponseEntity<?> uploadSlider(@RequestBody TopCategorySliderRequest request) {
         try {
+
+            // 🔐 Basic validation
+            if (request.getSlider_title() == null || request.getSlider_title().trim().isEmpty()) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("message", "Slider title is required"));
+            }
+
+            if (request.getSlider_details() == null || request.getSlider_details().trim().isEmpty()) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("message", "Slider details are required"));
+            }
+
             TopCategorySlider slider = new TopCategorySlider();
-
             slider.setSliderTitle(request.getSlider_title());
-
             slider.setSliderDetails(request.getSlider_details());
-            slider.setSliderImage(request.getSlider_image());
+
+            // Image is optional
+            if (request.getSlider_image() != null && !request.getSlider_image().isEmpty()) {
+                slider.setSliderImage(request.getSlider_image());
+            } else {
+                slider.setSliderImage(null);
+            }
 
             TopCategorySlider saved = repo.save(slider);
 
-            return ResponseEntity.ok(
-                    Map.of(
-                            "message", "Slider product uploaded successfully",
-                            "id", saved.getId()
-                    )
-            );
+            // ✅ Safe response (NO Map.of with nulls)
+            Map<String, Object> response = new java.util.HashMap<>();
+            response.put("message", "Top category slider uploaded successfully");
+            response.put("data", Map.of(
+                    "id", saved.getId(),
+                    "slider_title", saved.getSliderTitle()
+            ));
+
+            return ResponseEntity.ok(response);
 
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(500)
-                    .body(Map.of("message", "Upload failed"));
+                    .body(Map.of("message", "Upload failed due to server error"));
         }
     }
+
 
     // 2️⃣ Get All Slider Products
     @GetMapping("/all")
     public ResponseEntity<?> getAllSliders() {
 
-        List<?> response = repo.findAll().stream().map(s ->
-                Map.of(
-                        "id", s.getId(),
-                        "slider_title", s.getSliderTitle(),
-
-                        "slider_details", s.getSliderDetails(),
-                        "slider_image", s.getSliderImage()
-                )
-        ).toList();
+        List<Map<String, Object>> response = repo.findAll().stream().map(s -> {
+            Map<String, Object> map = new java.util.HashMap<>();
+            map.put("id", s.getId());
+            map.put("slider_title", s.getSliderTitle());
+            map.put("slider_details", s.getSliderDetails());
+            map.put("slider_image", s.getSliderImage());
+            return map;
+        }).toList();
 
         return ResponseEntity.ok(response);
     }
+
 
     // 3️⃣ Get Single Slider Product
     @GetMapping("/{id}")
