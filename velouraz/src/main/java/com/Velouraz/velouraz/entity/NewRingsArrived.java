@@ -1,14 +1,16 @@
 package com.Velouraz.velouraz.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "new_rings_arrived")
-public class NewRingsArrivedCat {
+public class NewRingsArrived {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

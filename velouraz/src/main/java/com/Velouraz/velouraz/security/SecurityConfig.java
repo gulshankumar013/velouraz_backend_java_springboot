@@ -36,6 +36,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/necklace/**").permitAll()
                         .requestMatchers("/api/top-category-slider/**").permitAll()
                         .requestMatchers("/api/daily-wear/**").permitAll()
+                        .requestMatchers("/api/gift-worthy/**").permitAll()
+                        .requestMatchers("/api/new-rings/**").permitAll()
+                        .requestMatchers("/api/new-top-selling-necklaces/**").permitAll()
+
                         // ✅ CART API ACCESS
                         .requestMatchers("/api/cart/**").authenticated()
 

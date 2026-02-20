@@ -1,6 +1,6 @@
 package com.Velouraz.velouraz.dto;
 
-public class NewRingsArrivedCatRequest {
+public class NewRingsArrivedRequest {
 
     private String ring_title;
     private Double ring_price;
@@ -46,7 +46,15 @@ public class NewRingsArrivedCatRequest {
         return ring_image2;
     }
 
+    public void setRing_image2(String ring_image2) {
+        this.ring_image2 = ring_image2;
+    }
+
     public String getRing_image3() {
         return ring_image3;
+    }
+
+    public void setRing_image3(String ring_image3) {
+        this.ring_image3 = ring_image3;
     }
 }

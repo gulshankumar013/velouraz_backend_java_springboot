@@ -1,7 +1,9 @@
 package com.Velouraz.velouraz.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
@@ -17,22 +19,22 @@ public class NewTopSellingNecklaces {
 
     @Lob
     @Column(name = "necklace_sets_image", columnDefinition = "LONGTEXT")
-    private String image1;
+    private String necklaceSetsImage;
 
     @Lob
     @Column(name = "necklace_sets_image2", columnDefinition = "LONGTEXT")
-    private String image2;
+    private String necklaceSetsImage2;
 
     @Lob
     @Column(name = "necklace_sets_image3", columnDefinition = "LONGTEXT")
-    private String image3;
+    private String necklaceSetsImage3;
 
     @Column(name = "necklace_sets_title")
-    private String title;
+    private String necklaceSetsTitle;
 
     @Column(name = "necklace_sets_price")
-    private Double price;
+    private Double necklaceSetsPrice;
 
     @Column(name = "necklace_sets_details", columnDefinition = "TEXT")
-    private String details;
+    private String necklaceSetsDetails;
 }
