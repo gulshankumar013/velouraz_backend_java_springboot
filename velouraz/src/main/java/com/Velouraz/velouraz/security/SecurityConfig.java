@@ -34,6 +34,8 @@ public class SecurityConfig {
                         .requestMatchers("/", "/api/auth/signup", "/api/auth/login").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/api/necklace/**").permitAll()
+                        .requestMatchers("/api/earrings/**").permitAll()
+                        .requestMatchers("/api/bangles/**").permitAll()
                         .requestMatchers("/api/top-category-slider/**").permitAll()
                         .requestMatchers("/api/daily-wear/**").permitAll()
                         .requestMatchers("/api/gift-worthy/**").permitAll()
