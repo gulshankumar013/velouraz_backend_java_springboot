@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/velouraz/velouraz.iml" filepath="$PROJECT_DIR$/velouraz/velouraz.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/velouraz.iml" filepath="$PROJECT_DIR$/.idea/velouraz.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/velouraz_backend_java_springboot.iml" filepath="$PROJECT_DIR$/.idea/velouraz_backend_java_springboot.iml" />
     </modules>
   </component>
