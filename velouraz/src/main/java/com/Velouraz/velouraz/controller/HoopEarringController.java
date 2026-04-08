@@ -1,8 +1,8 @@
 package com.Velouraz.velouraz.controller;
 
-import com.Velouraz.velouraz.dto.BangleSetRequest;
-import com.Velouraz.velouraz.entity.BangleSet;
-import com.Velouraz.velouraz.repository.BangleSetRepository;
+import com.Velouraz.velouraz.dto.HoopEarringRequest;
+import com.Velouraz.velouraz.entity.HoopEarring;
+import com.Velouraz.velouraz.repository.HoopEarringRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,34 +10,34 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/bangles")
+@RequestMapping("/api/hoop-earrings")
 @CrossOrigin(origins = {
         "http://localhost:5173",
         "http://localhost:5174",
 })
-public class BangleSetController {
+public class HoopEarringController {
 
     @Autowired
-    private BangleSetRepository repo;
+    private HoopEarringRepository repo;
 
-    // 1️⃣ Upload Bangle Set
+    // 1️⃣ Upload
     @PostMapping("/upload")
-    public ResponseEntity<?> upload(@RequestBody BangleSetRequest request) {
+    public ResponseEntity<?> upload(@RequestBody HoopEarringRequest request) {
         try {
-            BangleSet b = new BangleSet();
+            HoopEarring h = new HoopEarring();
 
-            b.setTitle(request.getTitle());
-            b.setPrice(request.getPrice());
-            b.setDetails(request.getDetails());
+            h.setTitle(request.getTitle());
+            h.setPrice(request.getPrice());
+            h.setDetails(request.getDetails());
 
-            b.setImage(request.getImage());
-            b.setImage2(request.getImage2());
-            b.setImage3(request.getImage3());
+            h.setImage(request.getImage());
+            h.setImage2(request.getImage2());
+            h.setImage3(request.getImage3());
 
-            BangleSet saved = repo.save(b);
+            HoopEarring saved = repo.save(h);
 
             return ResponseEntity.ok(Map.of(
-                    "message", "Bangle Set uploaded successfully",
+                    "message", "Hoop earring uploaded successfully",
                     "id", saved.getId()
             ));
 
@@ -51,20 +51,20 @@ public class BangleSetController {
     @GetMapping("/all")
     public ResponseEntity<?> getAll() {
 
-        List<BangleSet> list = repo.findAll();
+        List<HoopEarring> list = repo.findAll();
 
-        List<?> response = list.stream().map(b -> {
+        List<?> response = list.stream().map(h -> {
 
             List<String> images = new ArrayList<>();
-            if (b.getImage() != null) images.add(b.getImage());
-            if (b.getImage2() != null) images.add(b.getImage2());
-            if (b.getImage3() != null) images.add(b.getImage3());
+            if (h.getImage() != null) images.add(h.getImage());
+            if (h.getImage2() != null) images.add(h.getImage2());
+            if (h.getImage3() != null) images.add(h.getImage3());
 
             return Map.of(
-                    "id", b.getId(),
-                    "title", b.getTitle(),
-                    "price", b.getPrice(),
-                    "details", b.getDetails(),
+                    "id", h.getId(),
+                    "title", h.getTitle(),
+                    "price", h.getPrice(),
+                    "details", h.getDetails(),
                     "images", images
             );
         }).toList();
@@ -77,18 +77,18 @@ public class BangleSetController {
     public ResponseEntity<?> getOne(@PathVariable Long id) {
 
         return repo.findById(id)
-                .map(b -> {
+                .map(h -> {
 
                     List<String> images = new ArrayList<>();
-                    if (b.getImage() != null) images.add(b.getImage());
-                    if (b.getImage2() != null) images.add(b.getImage2());
-                    if (b.getImage3() != null) images.add(b.getImage3());
+                    if (h.getImage() != null) images.add(h.getImage());
+                    if (h.getImage2() != null) images.add(h.getImage2());
+                    if (h.getImage3() != null) images.add(h.getImage3());
 
                     return ResponseEntity.ok(Map.of(
-                            "id", b.getId(),
-                            "title", b.getTitle(),
-                            "price", b.getPrice(),
-                            "details", b.getDetails(),
+                            "id", h.getId(),
+                            "title", h.getTitle(),
+                            "price", h.getPrice(),
+                            "details", h.getDetails(),
                             "images", images
                     ));
                 })
@@ -99,7 +99,7 @@ public class BangleSetController {
     @PutMapping("/{id}")
     public ResponseEntity<?> update(
             @PathVariable Long id,
-            @RequestBody BangleSetRequest request
+            @RequestBody HoopEarringRequest request
     ) {
         return repo.findById(id)
                 .map(existing -> {
@@ -117,10 +117,10 @@ public class BangleSetController {
                     if (request.getImage3() != null)
                         existing.setImage3(request.getImage3());
 
-                    BangleSet updated = repo.save(existing);
+                    HoopEarring updated = repo.save(existing);
 
                     return ResponseEntity.ok(Map.of(
-                            "message", "Bangle Set updated successfully",
+                            "message", "Hoop earring updated successfully",
                             "data", Map.of(
                                     "id", updated.getId(),
                                     "title", updated.getTitle(),
@@ -135,7 +135,7 @@ public class BangleSetController {
                     ));
                 })
                 .orElse(ResponseEntity.badRequest()
-                        .body(Map.of("message", "Bangle Set not found")));
+                        .body(Map.of("message", "Hoop earring not found")));
     }
 
     // 5️⃣ Delete
@@ -144,10 +144,10 @@ public class BangleSetController {
 
         if (!repo.existsById(id)) {
             return ResponseEntity.badRequest()
-                    .body("Bangle Set not found with ID: " + id);
+                    .body("Hoop earring not found with ID: " + id);
         }
 
         repo.deleteById(id);
-        return ResponseEntity.ok("Bangle Set deleted successfully!");
+        return ResponseEntity.ok("Hoop earring deleted successfully!");
     }
 }

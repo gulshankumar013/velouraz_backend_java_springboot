@@ -14,7 +14,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/necklace")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {
+        "http://localhost:5173",
+        "http://localhost:5174",
+})
 public class NecklaceSetController {
 
     @Autowired

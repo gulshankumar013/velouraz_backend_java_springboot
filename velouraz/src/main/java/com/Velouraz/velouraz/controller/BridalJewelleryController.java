@@ -1,8 +1,8 @@
 package com.Velouraz.velouraz.controller;
 
-import com.Velouraz.velouraz.dto.BangleSetRequest;
-import com.Velouraz.velouraz.entity.BangleSet;
-import com.Velouraz.velouraz.repository.BangleSetRepository;
+import com.Velouraz.velouraz.dto.BridalJewelleryRequest;
+import com.Velouraz.velouraz.entity.BridalJewellery;
+import com.Velouraz.velouraz.repository.BridalJewelleryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,21 +10,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/bangles")
+@RequestMapping("/api/bridal-jewellery")
 @CrossOrigin(origins = {
         "http://localhost:5173",
         "http://localhost:5174",
 })
-public class BangleSetController {
+public class BridalJewelleryController {
 
     @Autowired
-    private BangleSetRepository repo;
+    private BridalJewelleryRepository repo;
 
-    // 1️⃣ Upload Bangle Set
+    // 1️⃣ Upload
     @PostMapping("/upload")
-    public ResponseEntity<?> upload(@RequestBody BangleSetRequest request) {
+    public ResponseEntity<?> upload(@RequestBody BridalJewelleryRequest request) {
         try {
-            BangleSet b = new BangleSet();
+            BridalJewellery b = new BridalJewellery();
 
             b.setTitle(request.getTitle());
             b.setPrice(request.getPrice());
@@ -34,10 +34,10 @@ public class BangleSetController {
             b.setImage2(request.getImage2());
             b.setImage3(request.getImage3());
 
-            BangleSet saved = repo.save(b);
+            BridalJewellery saved = repo.save(b);
 
             return ResponseEntity.ok(Map.of(
-                    "message", "Bangle Set uploaded successfully",
+                    "message", "Bridal jewellery uploaded successfully",
                     "id", saved.getId()
             ));
 
@@ -51,7 +51,7 @@ public class BangleSetController {
     @GetMapping("/all")
     public ResponseEntity<?> getAll() {
 
-        List<BangleSet> list = repo.findAll();
+        List<BridalJewellery> list = repo.findAll();
 
         List<?> response = list.stream().map(b -> {
 
@@ -99,7 +99,7 @@ public class BangleSetController {
     @PutMapping("/{id}")
     public ResponseEntity<?> update(
             @PathVariable Long id,
-            @RequestBody BangleSetRequest request
+            @RequestBody BridalJewelleryRequest request
     ) {
         return repo.findById(id)
                 .map(existing -> {
@@ -117,10 +117,10 @@ public class BangleSetController {
                     if (request.getImage3() != null)
                         existing.setImage3(request.getImage3());
 
-                    BangleSet updated = repo.save(existing);
+                    BridalJewellery updated = repo.save(existing);
 
                     return ResponseEntity.ok(Map.of(
-                            "message", "Bangle Set updated successfully",
+                            "message", "Bridal jewellery updated successfully",
                             "data", Map.of(
                                     "id", updated.getId(),
                                     "title", updated.getTitle(),
@@ -135,7 +135,7 @@ public class BangleSetController {
                     ));
                 })
                 .orElse(ResponseEntity.badRequest()
-                        .body(Map.of("message", "Bangle Set not found")));
+                        .body(Map.of("message", "Bridal jewellery not found")));
     }
 
     // 5️⃣ Delete
@@ -144,10 +144,10 @@ public class BangleSetController {
 
         if (!repo.existsById(id)) {
             return ResponseEntity.badRequest()
-                    .body("Bangle Set not found with ID: " + id);
+                    .body("Bridal jewellery not found with ID: " + id);
         }
 
         repo.deleteById(id);
-        return ResponseEntity.ok("Bangle Set deleted successfully!");
+        return ResponseEntity.ok("Bridal jewellery deleted successfully!");
     }
 }

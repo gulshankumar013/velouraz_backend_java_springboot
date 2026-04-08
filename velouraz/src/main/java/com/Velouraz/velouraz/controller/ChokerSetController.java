@@ -1,8 +1,8 @@
 package com.Velouraz.velouraz.controller;
 
-import com.Velouraz.velouraz.dto.BangleSetRequest;
-import com.Velouraz.velouraz.entity.BangleSet;
-import com.Velouraz.velouraz.repository.BangleSetRepository;
+import com.Velouraz.velouraz.dto.ChokerSetRequest;
+import com.Velouraz.velouraz.entity.ChokerSet;
+import com.Velouraz.velouraz.repository.ChokerSetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,34 +10,34 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/bangles")
+@RequestMapping("/api/choker-sets")
 @CrossOrigin(origins = {
         "http://localhost:5173",
         "http://localhost:5174",
 })
-public class BangleSetController {
+public class ChokerSetController {
 
     @Autowired
-    private BangleSetRepository repo;
+    private ChokerSetRepository repo;
 
-    // 1️⃣ Upload Bangle Set
+    // 1️⃣ Upload
     @PostMapping("/upload")
-    public ResponseEntity<?> upload(@RequestBody BangleSetRequest request) {
+    public ResponseEntity<?> upload(@RequestBody ChokerSetRequest request) {
         try {
-            BangleSet b = new BangleSet();
+            ChokerSet c = new ChokerSet();
 
-            b.setTitle(request.getTitle());
-            b.setPrice(request.getPrice());
-            b.setDetails(request.getDetails());
+            c.setTitle(request.getTitle());
+            c.setPrice(request.getPrice());
+            c.setDetails(request.getDetails());
 
-            b.setImage(request.getImage());
-            b.setImage2(request.getImage2());
-            b.setImage3(request.getImage3());
+            c.setImage(request.getImage());
+            c.setImage2(request.getImage2());
+            c.setImage3(request.getImage3());
 
-            BangleSet saved = repo.save(b);
+            ChokerSet saved = repo.save(c);
 
             return ResponseEntity.ok(Map.of(
-                    "message", "Bangle Set uploaded successfully",
+                    "message", "Choker set uploaded successfully",
                     "id", saved.getId()
             ));
 
@@ -51,20 +51,20 @@ public class BangleSetController {
     @GetMapping("/all")
     public ResponseEntity<?> getAll() {
 
-        List<BangleSet> list = repo.findAll();
+        List<ChokerSet> list = repo.findAll();
 
-        List<?> response = list.stream().map(b -> {
+        List<?> response = list.stream().map(c -> {
 
             List<String> images = new ArrayList<>();
-            if (b.getImage() != null) images.add(b.getImage());
-            if (b.getImage2() != null) images.add(b.getImage2());
-            if (b.getImage3() != null) images.add(b.getImage3());
+            if (c.getImage() != null) images.add(c.getImage());
+            if (c.getImage2() != null) images.add(c.getImage2());
+            if (c.getImage3() != null) images.add(c.getImage3());
 
             return Map.of(
-                    "id", b.getId(),
-                    "title", b.getTitle(),
-                    "price", b.getPrice(),
-                    "details", b.getDetails(),
+                    "id", c.getId(),
+                    "title", c.getTitle(),
+                    "price", c.getPrice(),
+                    "details", c.getDetails(),
                     "images", images
             );
         }).toList();
@@ -77,18 +77,18 @@ public class BangleSetController {
     public ResponseEntity<?> getOne(@PathVariable Long id) {
 
         return repo.findById(id)
-                .map(b -> {
+                .map(c -> {
 
                     List<String> images = new ArrayList<>();
-                    if (b.getImage() != null) images.add(b.getImage());
-                    if (b.getImage2() != null) images.add(b.getImage2());
-                    if (b.getImage3() != null) images.add(b.getImage3());
+                    if (c.getImage() != null) images.add(c.getImage());
+                    if (c.getImage2() != null) images.add(c.getImage2());
+                    if (c.getImage3() != null) images.add(c.getImage3());
 
                     return ResponseEntity.ok(Map.of(
-                            "id", b.getId(),
-                            "title", b.getTitle(),
-                            "price", b.getPrice(),
-                            "details", b.getDetails(),
+                            "id", c.getId(),
+                            "title", c.getTitle(),
+                            "price", c.getPrice(),
+                            "details", c.getDetails(),
                             "images", images
                     ));
                 })
@@ -99,7 +99,7 @@ public class BangleSetController {
     @PutMapping("/{id}")
     public ResponseEntity<?> update(
             @PathVariable Long id,
-            @RequestBody BangleSetRequest request
+            @RequestBody ChokerSetRequest request
     ) {
         return repo.findById(id)
                 .map(existing -> {
@@ -117,10 +117,10 @@ public class BangleSetController {
                     if (request.getImage3() != null)
                         existing.setImage3(request.getImage3());
 
-                    BangleSet updated = repo.save(existing);
+                    ChokerSet updated = repo.save(existing);
 
                     return ResponseEntity.ok(Map.of(
-                            "message", "Bangle Set updated successfully",
+                            "message", "Choker set updated successfully",
                             "data", Map.of(
                                     "id", updated.getId(),
                                     "title", updated.getTitle(),
@@ -135,7 +135,7 @@ public class BangleSetController {
                     ));
                 })
                 .orElse(ResponseEntity.badRequest()
-                        .body(Map.of("message", "Bangle Set not found")));
+                        .body(Map.of("message", "Choker set not found")));
     }
 
     // 5️⃣ Delete
@@ -144,10 +144,10 @@ public class BangleSetController {
 
         if (!repo.existsById(id)) {
             return ResponseEntity.badRequest()
-                    .body("Bangle Set not found with ID: " + id);
+                    .body("Choker set not found with ID: " + id);
         }
 
         repo.deleteById(id);
-        return ResponseEntity.ok("Bangle Set deleted successfully!");
+        return ResponseEntity.ok("Choker set deleted successfully!");
     }
 }

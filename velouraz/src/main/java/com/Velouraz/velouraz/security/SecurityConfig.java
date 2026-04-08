@@ -42,6 +42,13 @@ public class SecurityConfig {
                         .requestMatchers("/api/gift-worthy/**").permitAll()
                         .requestMatchers("/api/new-rings/**").permitAll()
                         .requestMatchers("/api/rings/**").permitAll()
+                        .requestMatchers("/api/anklets/**").permitAll()
+                        .requestMatchers("/api/choker-sets/**").permitAll()
+                        .requestMatchers("/api/pendant-sets/**").permitAll()
+                        .requestMatchers("/api/jhumka-earrings/**").permitAll()
+                        .requestMatchers("/api/hoop-earrings/**").permitAll()
+                        .requestMatchers("/api/bridal-jewellery/**").permitAll()
+                        .requestMatchers("/api/kundan-jewellery/**").permitAll()
                         .requestMatchers("/api/new-top-selling-necklaces/**").permitAll()
 
                         // ✅ CART API ACCESS

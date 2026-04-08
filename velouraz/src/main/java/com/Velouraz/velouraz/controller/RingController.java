@@ -11,7 +11,10 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/rings")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {
+        "http://localhost:5173",
+        "http://localhost:5174",
+})
 public class RingController {
 
     @Autowired

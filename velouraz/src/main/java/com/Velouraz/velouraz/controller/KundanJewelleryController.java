@@ -1,8 +1,8 @@
 package com.Velouraz.velouraz.controller;
 
-import com.Velouraz.velouraz.dto.BangleSetRequest;
-import com.Velouraz.velouraz.entity.BangleSet;
-import com.Velouraz.velouraz.repository.BangleSetRepository;
+import com.Velouraz.velouraz.dto.KundanJewelleryRequest;
+import com.Velouraz.velouraz.entity.KundanJewellery;
+import com.Velouraz.velouraz.repository.KundanJewelleryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,34 +10,34 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/bangles")
+@RequestMapping("/api/kundan-jewellery")
 @CrossOrigin(origins = {
         "http://localhost:5173",
         "http://localhost:5174",
 })
-public class BangleSetController {
+public class KundanJewelleryController {
 
     @Autowired
-    private BangleSetRepository repo;
+    private KundanJewelleryRepository repo;
 
-    // 1️⃣ Upload Bangle Set
+    // 1️⃣ Upload
     @PostMapping("/upload")
-    public ResponseEntity<?> upload(@RequestBody BangleSetRequest request) {
+    public ResponseEntity<?> upload(@RequestBody KundanJewelleryRequest request) {
         try {
-            BangleSet b = new BangleSet();
+            KundanJewellery k = new KundanJewellery();
 
-            b.setTitle(request.getTitle());
-            b.setPrice(request.getPrice());
-            b.setDetails(request.getDetails());
+            k.setTitle(request.getTitle());
+            k.setPrice(request.getPrice());
+            k.setDetails(request.getDetails());
 
-            b.setImage(request.getImage());
-            b.setImage2(request.getImage2());
-            b.setImage3(request.getImage3());
+            k.setImage(request.getImage());
+            k.setImage2(request.getImage2());
+            k.setImage3(request.getImage3());
 
-            BangleSet saved = repo.save(b);
+            KundanJewellery saved = repo.save(k);
 
             return ResponseEntity.ok(Map.of(
-                    "message", "Bangle Set uploaded successfully",
+                    "message", "Kundan jewellery uploaded successfully",
                     "id", saved.getId()
             ));
 
@@ -51,20 +51,20 @@ public class BangleSetController {
     @GetMapping("/all")
     public ResponseEntity<?> getAll() {
 
-        List<BangleSet> list = repo.findAll();
+        List<KundanJewellery> list = repo.findAll();
 
-        List<?> response = list.stream().map(b -> {
+        List<?> response = list.stream().map(k -> {
 
             List<String> images = new ArrayList<>();
-            if (b.getImage() != null) images.add(b.getImage());
-            if (b.getImage2() != null) images.add(b.getImage2());
-            if (b.getImage3() != null) images.add(b.getImage3());
+            if (k.getImage() != null) images.add(k.getImage());
+            if (k.getImage2() != null) images.add(k.getImage2());
+            if (k.getImage3() != null) images.add(k.getImage3());
 
             return Map.of(
-                    "id", b.getId(),
-                    "title", b.getTitle(),
-                    "price", b.getPrice(),
-                    "details", b.getDetails(),
+                    "id", k.getId(),
+                    "title", k.getTitle(),
+                    "price", k.getPrice(),
+                    "details", k.getDetails(),
                     "images", images
             );
         }).toList();
@@ -77,18 +77,18 @@ public class BangleSetController {
     public ResponseEntity<?> getOne(@PathVariable Long id) {
 
         return repo.findById(id)
-                .map(b -> {
+                .map(k -> {
 
                     List<String> images = new ArrayList<>();
-                    if (b.getImage() != null) images.add(b.getImage());
-                    if (b.getImage2() != null) images.add(b.getImage2());
-                    if (b.getImage3() != null) images.add(b.getImage3());
+                    if (k.getImage() != null) images.add(k.getImage());
+                    if (k.getImage2() != null) images.add(k.getImage2());
+                    if (k.getImage3() != null) images.add(k.getImage3());
 
                     return ResponseEntity.ok(Map.of(
-                            "id", b.getId(),
-                            "title", b.getTitle(),
-                            "price", b.getPrice(),
-                            "details", b.getDetails(),
+                            "id", k.getId(),
+                            "title", k.getTitle(),
+                            "price", k.getPrice(),
+                            "details", k.getDetails(),
                             "images", images
                     ));
                 })
@@ -99,7 +99,7 @@ public class BangleSetController {
     @PutMapping("/{id}")
     public ResponseEntity<?> update(
             @PathVariable Long id,
-            @RequestBody BangleSetRequest request
+            @RequestBody KundanJewelleryRequest request
     ) {
         return repo.findById(id)
                 .map(existing -> {
@@ -117,10 +117,10 @@ public class BangleSetController {
                     if (request.getImage3() != null)
                         existing.setImage3(request.getImage3());
 
-                    BangleSet updated = repo.save(existing);
+                    KundanJewellery updated = repo.save(existing);
 
                     return ResponseEntity.ok(Map.of(
-                            "message", "Bangle Set updated successfully",
+                            "message", "Kundan jewellery updated successfully",
                             "data", Map.of(
                                     "id", updated.getId(),
                                     "title", updated.getTitle(),
@@ -135,7 +135,7 @@ public class BangleSetController {
                     ));
                 })
                 .orElse(ResponseEntity.badRequest()
-                        .body(Map.of("message", "Bangle Set not found")));
+                        .body(Map.of("message", "Kundan jewellery not found")));
     }
 
     // 5️⃣ Delete
@@ -144,10 +144,10 @@ public class BangleSetController {
 
         if (!repo.existsById(id)) {
             return ResponseEntity.badRequest()
-                    .body("Bangle Set not found with ID: " + id);
+                    .body("Kundan jewellery not found with ID: " + id);
         }
 
         repo.deleteById(id);
-        return ResponseEntity.ok("Bangle Set deleted successfully!");
+        return ResponseEntity.ok("Kundan jewellery deleted successfully!");
     }
 }
